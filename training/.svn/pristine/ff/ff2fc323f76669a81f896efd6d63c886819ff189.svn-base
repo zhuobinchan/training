@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	
+	<package name="teacher" extends="json-default" namespace="/">
+
+		
+		<action name="TeacherAdminCourse_*" class="com.ehighsun.training.teacher.action.TeacherAdminCourseAction" method="{1}">
+			<result name="getObjectById">/teacher/main.jsp</result>
+			<result name="findAll">/teacher/main.jsp</result>
+			<result name="findPage">/teacher/main.jsp</result>
+			<result name="findPageByMap">/teacher/main.jsp</result>
+			<result name="findStudentPage">/teacher/main.jsp</result>
+			<result name="filterStudent">/teacher/main.jsp</result>
+			<result name="modifyTeacher" type="chain">TeacherAdminCourse_getObjectById</result>
+			<result name="saveObject" type="redirectAction">teacher/TeacherAdminCourse_findPage?mainPage=teacherAdminCourse.jsp&amp;findPageTarget=/teacher/TeacherAdminCourse_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">teacher/TeacherAdminCourse_findPage?mainPage=teacherAdminCourse.jsp&amp;findPageTarget=/teacher/TeacherAdminCourse_findPage&amp;page=${currentPage}</result>			
+			<result name="input">/admin/login.jsp</result>
+		</action>
+	</package>
+	
+</struts>    

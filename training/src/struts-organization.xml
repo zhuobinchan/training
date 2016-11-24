@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	
+	<package name="organization" extends="json-default" namespace="/">
+
+		
+		<action name="Organization_*" class="com.ehighsun.training.organization.action.OrganizationAction" method="{1}">
+			<result name="getObjectById">/organization_/main.jsp</result>
+			<result name="findAll">/organization_/main.jsp</result>
+			<result name="findPage">/organization_/main.jsp</result>
+			<result name="findPageByMap">/organization/main.jsp</result>
+			<result name="findStudentPage">/organization_/main.jsp</result>
+			<result name="filterStudent">/organization_/main.jsp</result>
+			<result name="modifyTeacher" type="chain">TeacherAdminCourse_getObjectById</result>
+			<result name="saveObject" type="redirectAction">organization_/TeacherAdminCourse_findPage?mainPage=teacherAdminCourse.jsp&amp;findPageTarget=/teacher/TeacherAdminCourse_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">organization_/TeacherAdminCourse_findPage?mainPage=teacherAdminCourse.jsp&amp;findPageTarget=/teacher/TeacherAdminCourse_findPage&amp;page=${currentPage}</result>			
+			
+			<result name="getTeachers">/organization/main.jsp</result>
+			
+			<result name="input">/organization/login.jsp</result>
+		</action>
+	</package>
+	
+</struts>    

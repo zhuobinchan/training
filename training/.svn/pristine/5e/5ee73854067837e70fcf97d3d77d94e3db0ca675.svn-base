@@ -1,0 +1,99 @@
+package com.ehighsun.training.service.impl;
+
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+
+import javassist.expr.NewArray;
+
+import javax.annotation.Resource;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.stereotype.Service;
+
+import com.ehighsun.training.dao.BaseDao;
+import com.ehighsun.training.pojo.Apply;
+import com.ehighsun.training.pojo.ClassTable;
+import com.ehighsun.training.pojo.Course;
+import com.ehighsun.training.pojo.Person;
+import com.ehighsun.training.util.FileUploadUtil;
+import com.ehighsun.training.util.StringUtil;
+
+@Service("courseService")
+public class CourseServiceImp extends BaseServiceImpl {
+	
+	@Resource(name="baseDao")
+	private BaseDao<Course> baseDao;
+	
+	public void saveCourse(File img, String imgFileName, Course course) {
+
+		if (img != null&&StringUtil.isNotEmpty(img.getPath())) {
+
+			FileUploadUtil fileUtil = new FileUploadUtil();
+
+			String imageUrl = fileUtil.updateFile(img, imgFileName,
+					"images/userLogo");
+
+			course.setImageUrl(imageUrl);
+		}
+		
+		course.setStatus(0);
+		course.setPublishTime(new Timestamp(System.currentTimeMillis()));
+		super.saveObject(course);
+
+	}
+
+	public void saveOrUpdateCourse(File img, String imgFileName,
+			Course course) {
+
+		FileUploadUtil fileUtil = new FileUploadUtil();
+		Course index = (Course) super.getObjectById(new Course(), course.getCourseId());
+		
+		if (img != null&&StringUtil.isNotEmpty(img.getPath())) {
+
+			String pathname = ServletActionContext.getRequest().getSession()
+					.getServletContext().getRealPath("/" + index.getImageUrl());
+
+			fileUtil.deleteFile(pathname);
+
+			String imageUrl = fileUtil.updateFile(img, imgFileName,
+					"images/userLogo");
+
+			course.setImageUrl(imageUrl);
+
+		} else if (StringUtil.isNotEmpty(index.getImageUrl())) {
+			course.setImageUrl(index.getImageUrl());
+		}
+
+//		super.saveOrUpdateObject(course);
+		
+		baseDao.merge(course);
+
+	}
+	
+	public void deleteCourse(Integer id){
+		
+		Course course = (Course) super.getObjectById(new Course(), id);
+		
+		List<ClassTable> classTables = (List<ClassTable>) super.find("From ClassTable where course.courseId = "+course.getCourseId());
+		
+		for(ClassTable classTable:classTables){
+			baseDao.executeSql("delete from apply where classNo = '"+classTable.getClassNo()+"'");
+			super.deleteObject(classTable);
+		}
+		
+		if(StringUtil.isNotEmpty(course.getImageUrl())){
+			
+			String pathname = ServletActionContext.getRequest().getSession()
+					.getServletContext().getRealPath("/" + course.getImageUrl());
+			
+			FileUploadUtil.deleteFile(pathname);
+		}
+		
+		super.deleteObject(course);
+		
+		
+	}
+	
+}

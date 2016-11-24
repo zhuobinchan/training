@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.multipart.saveDir" value="/tmp"/>
+	<package name="admin" extends="json-default" namespace="/">
+		<global-results>
+			<result name="findAll">/admin/main.jsp</result>
+			<result name="findPage">/admin/main.jsp</result>
+			<result name="findPageByMap">/admin/main.jsp</result>
+			<result name="deleteObject" type="json">
+				<param name="root">json</param>
+				<param name="encoding">UTF-8</param>
+			</result>
+			<result name="deleteObjects" type="json">
+				<param name="root">json</param>
+				<param name="encoding">UTF-8</param>
+			</result>
+		</global-results>
+		<action name="enterAdminMain" class="com.ehighsun.training.admin.action.EnterAdminMain">
+			<result name="success">/admin/main.jsp</result>
+		</action>	
+
+		<action name="*_login" class="com.ehighsun.training.commonality.action.UserLoginAction" method="{1}">
+			<result name="admin">/admin/main.jsp</result>
+			<result name="teacher">/teacher/main.jsp</result>
+			<result name="student">/admin/login.jsp</result>
+			<result name="organization">/organization/main.jsp</result>
+			<result name="input">/admin/login.jsp</result>
+			<result name="organizationInput">/organization/login.jsp</result>
+		</action>	
+		
+		<action name="AdminOrganization_*" class="com.ehighsun.training.admin.action.AdminOrganizationAction" method="{1}">
+			<result name="saveObject" type="redirectAction">admin/AdminOrganization_findPage?mainPage=adminOrganization.jsp&amp;findPageTarget=/admin/AdminOrganization_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminOrganization_findPage?mainPage=adminOrganization.jsp&amp;findPageTarget=/admin/AdminOrganization_findPage&amp;page=${currentPage}</result>			
+			<result name="input">login.jsp</result>
+		</action>
+		
+		<action name="AdminTeacher_*" class="com.ehighsun.training.admin.action.AdminTeacherAction" method="{1}">
+			
+			<result name="saveObject" type="redirectAction">admin/AdminTeacher_findPage?mainPage=adminTeacher.jsp&amp;findPageTarget=/admin/AdminTeacher_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminTeacher_findPage?mainPage=adminTeacher.jsp&amp;findPageTarget=/admin/AdminTeacher_findPage&amp;page=${currentPage}</result>			
+			<result name="input">login.jsp</result>
+		</action>		
+		
+		<action name="AdminStudent_*" class="com.ehighsun.training.admin.action.AdminStudentAction" method="{1}">
+		</action>		
+		
+		<action name="AdminCourse_*" class="com.ehighsun.training.admin.action.AdminCourseAction" method="{1}">
+			<result name="saveObject" type="redirectAction">admin/AdminCourse_findPage?mainPage=adminCourse.jsp&amp;findPageTarget=/admin/AdminCourse_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminCourse_findPage?mainPage=adminCourse.jsp&amp;findPageTarget=/admin/AdminCourse_findPage&amp;page=${currentPage}</result>
+			<result name="changeCourseStatus" type="json">
+				<param name="root">json</param>
+				<param name="encoding">UTF-8</param>
+			</result>			
+			<result name="input">login.jsp</result>
+		</action>	
+		<action name="AdminLump_*" class="com.ehighsun.training.admin.action.AdminLumpAction" method="{1}">
+			<result name="saveObject" type="redirectAction">admin/AdminLump_findPage?mainPage=adminLump.jsp&amp;findPageTarget=/admin/AdminLump_findPage&amp;page=${currentPage}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminLump_findPage?mainPage=adminLump.jsp&amp;findPageTarget=/admin/AdminLump_findPage&amp;page=${currentPage}</result>
+			<result name="input">login.jsp</result>
+		</action>	
+		<action name="AdminChapter_*" class="com.ehighsun.training.admin.action.AdminChapterAction" method="{1}">
+			<result name="saveObject" type="redirectAction">admin/AdminChapter_findPageByCourseId?mainPage=adminChapter.jsp&amp;findPageTarget=/admin/AdminChapter_findPageByCourseId&amp;page=${currentPage}&amp;id=${id}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminChapter_findPageByCourseId?mainPage=adminChapter.jsp&amp;findPageTarget=/admin/AdminChapter_findPageByCourseId&amp;page=${currentPage}&amp;id=${id}</result>
+			<result name="input">login.jsp</result>
+		</action>
+		
+		<action name="AdminResource_*" class="com.ehighsun.training.admin.action.AdminResourceAction" method="{1}">
+			<result name="saveObject" type="redirectAction">admin/AdminResource_findPageByChapterId?mainPage=adminResource.jsp&amp;findPageTarget=/admin/AAdminResource_findPageByChapterId&amp;page=${currentPage}&amp;id=${id}</result>	
+			<result name="saveOrUpdateObject" type="redirectAction">admin/AdminChapter_findPageByCourseId?mainPage=adminResource.jsp&amp;findPageTarget=/admin/AdminChapter_findPageByCourseId&amp;page=${currentPage}&amp;id=${id}</result>
+			<result name="getChapterByCourseIdAjax" type="json">
+				<param name="root">json</param>
+				<param name="encoding">UTF-8</param>
+			</result>
+			<result name="input">login.jsp</result>
+		</action>
+	</package>
+	
+</struts>    
